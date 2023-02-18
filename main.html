@@ -3,14 +3,69 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Automats</title>
+    <title>Automata - Formal languages</title>
     <script src="https://unpkg.com/gojs/release/go.js"></script>
+    <script defer type="module" src="app.js"></script>
+    <!-- Use of BulmaCSS -->
+    <link rel="shortcut icon" href="i00.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
 </head>
 
 <body>
-    <div id="myDiagramDiv" style="width:1500px; height:500px;"></div>
-    <input type="file" id="fileInput">
-    <script src="app.js"></script>
+    <div class="box text-2xl m-5 has-text-centered">
+        <div class="columns is-vcentered">
+            <div class="column is-12">
+                <div id="myDiagramDiv" style="width:100%; height:500px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="box text-2xl m-5 has-text-centered">
+        <div class="columns is-vcentered">
+            <div class="column is-2">
+                <div class="file">
+                    <label class="file-label">
+                        <!-- <input type="file" id="fileInput"> -->
+                        <input class="file-input" type="file" id="fileInput" name="resume">
+                        <span class="file-cta">
+                            <span class="file-icon">
+                                <i class="fas fa-upload"></i>
+                            </span>
+                            <span class="file-label">
+                                Choose a file…
+                            </span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+            <div class="column is-2">
+                <button id='clearBtn' class="button is-primary is-outlined">New automata</button>
+            </div>
+            <div class="column is-2">
+                <button id='clearBtn' class="button is-info is-outlined">Option</button>
+            </div>
+            <div class="column is-2">
+                <button id='clearBtn' class="button is-info is-outlined">Option</button>
+            </div>
+            <div class="column is-2">
+                <button id='clearBtn' class="button is-info is-outlined">Option</button>
+            </div>
+            <div class="column is-2">
+                <button id='clearBtn' class="button is-info is-danger">Clear all</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="columns"> -->
+    <!-- Hello maths! <br> ∫ -->
+    <!-- <div class="column is-10">
+            <input type="text" id="inputDiv" class="input is-info" placeholder="> Enter an input!">
+        </div>
+        <div class="column">
+            <button id='clearBtn' class="button is-info is-outlined">Clear</button>
+        </div> -->
+
 </body>
 
 </html>
