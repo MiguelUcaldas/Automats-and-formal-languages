@@ -14,8 +14,6 @@ export default class Function {
         for (let i = 0; i < string.length; i++) {
             acceptable = this.nextState()
         }
-
-        // nextState()
     }
 
     nextState() {

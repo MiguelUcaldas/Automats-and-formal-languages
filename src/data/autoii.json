@@ -1,0 +1,15 @@
+{
+  "alphabet": "\\d*",
+  "states": [
+    {"state": "A", "isStart": true, "isEnd": true},
+    {"state": "B", "isStart": true, "isEnd": true},
+    {"state": "C", "isStart": true, "isEnd": true},
+    {"state": "D", "isStart": false,"isEnd": false}
+  ],
+  "transitions": [
+    {"from": "B", "to": "A", "char": ["0"]},
+    {"from": "A", "to": "B", "char": ["0"]},
+    {"from": "A", "to": "A", "char": ["1"]},
+    {"from": "b", "to": "B", "char": ["1"]}
+  ]
+}

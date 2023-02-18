@@ -1,8 +1,10 @@
 export default class State {
     constructor(data) {
         this.data = data
+        this.isStart = false
         this.isEnd = false
         this.adjacent = []
+        // this.alfabeth = ["A","B","C"]
     }
 
     setData(data) {
@@ -17,6 +19,18 @@ export default class State {
     }
     setAdjacent(adjacent) {
         this.adjacent = adjacent
+    }
+    setIsStart(start){
+        this.isStart = start
+    }
+    getIsStart(){
+        return this.isStart
+    }
+    setIsEnd(end){
+        this.isEnd = end
+    }
+    getIsEnd(){
+        return this.isEnd
     }
 
     toString() {

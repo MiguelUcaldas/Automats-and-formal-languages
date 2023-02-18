@@ -3,7 +3,6 @@ export default class Transition {
         this.start = start
         this.end = end
         this.data = data
-        this.pass = true
     }
 
     setStart(start) {
@@ -27,15 +26,7 @@ export default class Transition {
         return this.data
     }
 
-    setPass(pass) {
-        this.pass = pass
-    }
-    getPass() {
-        return this.pass
-    }
-
     toString() {
         return `(${this.start} → ${this.end} ⟨${this.data} | ${this.pass}⟩)`
     }
-
 }

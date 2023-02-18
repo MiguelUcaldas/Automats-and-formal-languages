@@ -3,11 +3,11 @@ import Transition from './transition.js'
 /* TODO: Maybe FunctionTrans class??? */
 
 export default class Automata {
-    constructor(transition) {
+    constructor() {
         this.states = []
         this.transitions = []
         this.alphabet = ''
-        this.transitionFunction = transition
+        // this.transitionFunction = transition
         // this.Function = algorithm
     }
 
@@ -80,7 +80,7 @@ export default class Automata {
 
     setAlphabet(symbols) {
         this.alphabet = new RegExp(`^[${symbols}]+$`)
-        console.log('Alphabet defined.')
+        // console.log('Alphabet defined.')
     }
 
     seeStates(str = '') {
@@ -113,4 +113,10 @@ export default class Automata {
 
     // }
 
+
+    toString() {
+        return `States: ${this.seeStates()}
+                Transitions: ${this.seeTransitions()}
+                Alphabet: ${this.alphabet}`
+    }
 }
