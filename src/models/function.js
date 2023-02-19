@@ -1,52 +1,56 @@
-import State from "./state"
-
 export default class Function {
     constructor(automata, string) {
-        this.actualState = null
+        this.actualState = this.getInitialState()
         this.automata = automata
         this.string = string
-        this.reading = 0
+        this.index = 0
+    }
+
+    getInitialState() {
+        let states = this.automata.getStates()
+        for (let i = 0; i < states.length; i++) {
+            if (states[i].getIsStart()) {
+                return states[i]
+            }
+        }
     }
 
     activate(string) {
         this.actualState = this.automata.getStates()[0]
         let acceptable = false
         for (let i = 0; i < string.length; i++) {
-            acceptable = this.nextState()
+            if (this.actualState.isEnd())
+                acceptable = this.nextState()
         }
     }
 
     nextState() {
-        if (this.reading === this.string.length) {
+        if (this.index === this.string.length) {
             console.log('All string has been red.')
             return
         }
-        if (this.actualState == null) {
-            console.log('No initial state. Defined to initial one.')
-            this.actualState = this.automata.getStates()[0]
-            return
-        }
-        let transitions = this.automata.getTransitions()
-        let adjacent = this.automata.actualState.getAdjacent()
 
+        let transitions = this.automata.getTransitions()
         transitions.forEach(transition => {
-            if (this.actualState.getData() === transition.getStart()) {
-                adjacent.forEach(state => {
-                    if (state.getData() === transition.getEnd()) {
-                        // Final verification
-                        if (transition.getData() === this.string[this.reading]) {
-                            // State changing!
-                            console.log('previous state: ' + this.actualState.getData())
-                            this.actualState = state
-                            console.log('actual state: ' +
-                                this.actualState.getData(), 'changed by', this.string[this.reading])
+            if (actualState.getData() === transition.getStart().getData()) {
+                chars = transition.getChars()
+                chars.forEach(char => {
+                    if (char === this.string[this.index]) {
+                        console.log('actual state: ' + this.actualState.getData(), 'changed by', this.string[this.index])
+                        this.actualState = transition.getEnd()
+
+                        let alphabet = this.automata.getAlphabet()
+                        if (alphabet.test(this.string[this.index])) {
+                            this.index++
                             return this.actualState
+                        } else {
+                            console.log('Invalid char: ' + this.string[this.index])
                         }
                     }
                 })
             }
         })
-        this.reading++
+        console.log('No transition found.')
     }
 
     setActualState(actualState) {

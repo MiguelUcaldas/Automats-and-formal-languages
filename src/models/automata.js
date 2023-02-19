@@ -108,12 +108,6 @@ export default class Automata {
         }
     }
 
-
-    // activate() {
-
-    // }
-
-
     toString() {
         return `States: ${this.seeStates()}
                 Transitions: ${this.seeTransitions()}

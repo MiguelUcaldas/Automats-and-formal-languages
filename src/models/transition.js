@@ -1,8 +1,8 @@
 export default class Transition {
-    constructor(start, end, data) {
+    constructor(start, end, chars) {
         this.start = start
         this.end = end
-        this.data = data
+        this.chars = chars
     }
 
     setStart(start) {
@@ -19,14 +19,17 @@ export default class Transition {
         return this.end
     }
 
-    setData(load) {
-        this.data = load
+    newChars(data) {
+        this.chars.push(data)
     }
-    getData() {
-        return this.data
+    setChars(data) {
+        this.chars = data
+    }
+    getChars() {
+        return this.chars
     }
 
     toString() {
-        return `(${this.start} → ${this.end} ⟨${this.data} | ${this.pass}⟩)`
+        return `(${this.start} → ${this.end} ⟨${this.chars} | ${this.pass}⟩)`
     }
 }

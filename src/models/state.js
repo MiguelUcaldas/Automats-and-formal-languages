@@ -20,16 +20,16 @@ export default class State {
     setAdjacent(adjacent) {
         this.adjacent = adjacent
     }
-    setIsStart(start){
+    setIsStart(start) {
         this.isStart = start
     }
-    getIsStart(){
+    getIsStart() {
         return this.isStart
     }
-    setIsEnd(end){
+    setIsEnd(end) {
         this.isEnd = end
     }
-    getIsEnd(){
+    getIsEnd() {
         return this.isEnd
     }
 
