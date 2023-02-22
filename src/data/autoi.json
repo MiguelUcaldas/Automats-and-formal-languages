@@ -1,4 +1,5 @@
 {
+  "name": "Automata 01",
   "alphabet": "\\d*",
   "states": [
     {"state": "A", "isStart": true, "isEnd": true},

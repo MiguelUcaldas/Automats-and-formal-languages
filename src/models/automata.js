@@ -4,11 +4,19 @@ import Transition from './transition.js'
 
 export default class Automata {
     constructor() {
+        this.name = ''
         this.states = []
         this.transitions = []
         this.alphabet = ''
         // this.transitionFunction = transition
         // this.Function = algorithm
+    }
+
+    setName(name) {
+        this.name = name
+    }
+    getName() {
+        return this.name
     }
 
     runTransitionFunction() {

@@ -4,6 +4,7 @@ import UInterface from '../views/uinterface.js'
 export default class Control {
     constructor() {
         this.automats = []
+        this.automata = null
         this.uinterface = new UInterface();
 
         this.jsonBtn = document.getElementById('fileInput')
@@ -18,14 +19,13 @@ export default class Control {
 
         this.jsonBtn.addEventListener('change', this.clickJson.bind(this))
         this.unionBtn.addEventListener('click', this.union.bind(this))
-        this.nextBtn.addEventListener('click', this.next.bind(this))
+        // this.nextBtn.addEventListener('click', this.next.bind(this))
         this.intersectionBtn.addEventListener('click', this.intersection.bind(this))
         this.inverseBtn.addEventListener('click', this.inverse.bind(this))
         this.complementBtn.addEventListener('click', this.complement.bind(this))
         this.clearBtn.addEventListener('click', this.clear.bind(this))
 
-        this.automataSel.addEventListener('click', this.clear.bind(this))
-
+        this.automataSel.addEventListener('click', this.selectAutomata.bind(this))
 
         this.loadInterface()
     }
@@ -62,6 +62,8 @@ export default class Control {
 
 
     clickJson(e) {
+        this.automataSel.options[0].remove()
+
         let files = Array.from(e.target.files)
         files.forEach(file => {
             let reader = new FileReader()
@@ -70,29 +72,40 @@ export default class Control {
                     let data = JSON.parse(e.target.result)
                     let automata = new Automata()
 
+                    automata.setName(data.name)
+                    automata.setAlphabet(data.alphabet)
                     automata.setStates(data.states)
                     automata.setTransitions(data.transitions)
-                    automata.setAlphabet(data.alphabet)
                     files.length > 1 ?
                         this.showToast('New Automats from JSON!') :
                         this.showToast('New Automata from JSON!')
 
                     console.log('Json loaded as', automata)
                     this.automats.push(automata)
-                    this.selectAutomata()
+                    this.fillAutomata(data.name)
                 }
             })(file)
             reader.readAsText(file)
         })
+        this.automata = this.automats[0]
+
+        this.loadInterface(this.automats)
+    }
+
+    fillAutomata(name) {
+        let option = document.createElement(`option`)
+        option.value = `${name}`
+        option.textContent = `${name}`
+        this.automataSel.appendChild(option)
     }
 
     selectAutomata() {
-        for (let i = 0; i < this.automats.length; i++) {
-            let option = document.createElement(`option`)
-            option.value = `value ${i}`
-            option.textContent = `option ${i}`
-            this.automataSel.appendChild(option)
-        }
+        let option = this.automataSel.value
+        this.automats.forEach(auto => {
+            if (option === auto.getName()) {
+                this.automata = auto
+            }
+        })
     }
 
     showToast(message) {

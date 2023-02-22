@@ -1,3 +1,43 @@
+export default class Template {
+    constructor() {
+        this.diagram = null
+        this.nodes = null
+        this.links = null
+        this.animation = null
+    }
+
+    getDiagram() {
+
+    }
+
+    getNodes() {
+        return myDiagram.nodeTemplate =
+            $(go.Node, 'Auto',
+                $(go.Shape, 'Circle', // Cambiar la forma del nodo a un círculo
+                    {
+                        fill: $(go.Brush, 'Linear', {  // Crear un gradiente de color
+                            0: '#FC8181',  // Color de inicio
+                            1: '#F6AD55'   // Color de fin
+                        }),
+                        strokeWidth: 2,  // Aumentar el grosor del borde del nodo
+                        stroke: '#FEB2B2'  // Cambiar el color del borde
+                    }),
+                $(go.TextBlock, { margin: 8 },
+                    new go.Binding('text', 'key'))
+            )
+    }
+
+    getLinks() {
+        return myDiagram.linkTemplate =
+            $(go.Link,
+                $(go.Shape, { strokeWidth: 2, stroke: '#CBD5E0' }), // Cambiar el grosor y color de la línea de la relación
+                $(go.Shape, { toArrow: 'Standard', stroke: '#CBD5E0' }), // Cambiar el color y agregar la flecha de la relación
+                $(go.TextBlock,
+                    new go.Binding('text', 'key'))
+            )
+    }
+    
+}
 // Obtener el botón de carga de archivos
     // Crear el diagrama
     // let $ = go.GraphObject.make  // Acceder al constructor de objetos GoJS
