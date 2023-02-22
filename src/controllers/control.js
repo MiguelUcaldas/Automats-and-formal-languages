@@ -5,7 +5,9 @@ export default class Control {
     constructor() {
         this.automats = []
         this.automata = null
-        this.uinterface = new UInterface();
+        this.uinterface = new UInterface()
+        this.automatsLoaded = 0
+
 
         this.jsonBtn = document.getElementById('fileInput')
         this.unionBtn = document.getElementById('unionBtn')
@@ -27,15 +29,18 @@ export default class Control {
 
         this.automataSel.addEventListener('click', this.selectAutomata.bind(this))
 
-        this.loadInterface()
+        // this.loadInterface()
     }
 
     loadInterface() {
-        this.uinterface.run(this.automats)
+        if (this.automatsLoaded === this.jsonBtn.files.length) {
+            this.uinterface.run(this.automats)
+        }
     }
 
     union() {
         console.log('The union function was clicked.')
+        console.log('AUTOS', this.automats)
     }
 
     union() {
@@ -82,14 +87,15 @@ export default class Control {
 
                     console.log('Json loaded as', automata)
                     this.automats.push(automata)
-                    this.fillAutomata(data.name)
+                    this.fillAutomata(data.name) /* To fill the selectable */
+                    this.automatsLoaded++
+
+                    this.loadInterface()
+                    this.automata = this.automats[0]
                 }
             })(file)
             reader.readAsText(file)
         })
-        this.automata = this.automats[0]
-
-        this.loadInterface(this.automats)
     }
 
     fillAutomata(name) {
@@ -101,6 +107,7 @@ export default class Control {
 
     selectAutomata() {
         let option = this.automataSel.value
+        console.log(this.automats)
         this.automats.forEach(auto => {
             if (option === auto.getName()) {
                 this.automata = auto
@@ -109,30 +116,30 @@ export default class Control {
     }
 
     showToast(message) {
-        const toastContainer = document.createElement('div');
-        toastContainer.classList.add('toast-container');
-        document.body.appendChild(toastContainer);
+        const toastContainer = document.createElement('div')
+        toastContainer.classList.add('toast-container')
+        document.body.appendChild(toastContainer)
 
-        const toast = document.createElement('div');
-        toast.classList.add('toast');
-        toast.textContent = message;
-        toastContainer.appendChild(toast);
+        const toast = document.createElement('div')
+        toast.classList.add('toast')
+        toast.textContent = message
+        toastContainer.appendChild(toast)
 
-        toast.style.opacity = 0;
-        toast.style.transform = 'translateX(100%)';
-
-        setTimeout(() => {
-            toast.style.opacity = 1;
-            toast.style.transform = 'translateX(0)';
-        }, 10);
+        toast.style.opacity = 0
+        toast.style.transform = 'translateX(100%)'
 
         setTimeout(() => {
-            toast.style.opacity = 0;
-            toast.style.transform = 'translateX(-100%)';
+            toast.style.opacity = 1
+            toast.style.transform = 'translateX(0)'
+        }, 10)
+
+        setTimeout(() => {
+            toast.style.opacity = 0
+            toast.style.transform = 'translateX(-100%)'
             setTimeout(() => {
-                toastContainer.remove();
-            }, 500);
-        }, 3000);
+                toastContainer.remove()
+            }, 500)
+        }, 3000)
     }
 }
 
