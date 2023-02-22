@@ -1,16 +1,9 @@
 export default class Template {
-    constructor() {
-        this.diagram = null
-        this.nodes = null
-        this.links = null
-        this.animation = null
-    }
+    constructor() { }
 
-    getDiagram() {
+    getDiagram() { }
 
-    }
-
-    getNodes() {
+    getNodeTemplate() {
         return myDiagram.nodeTemplate =
             $(go.Node, 'Auto',
                 $(go.Shape, 'Circle', // Cambiar la forma del nodo a un círculo
@@ -27,7 +20,7 @@ export default class Template {
             )
     }
 
-    getLinks() {
+    getLinkTemplate() {
         return myDiagram.linkTemplate =
             $(go.Link,
                 $(go.Shape, { strokeWidth: 2, stroke: '#CBD5E0' }), // Cambiar el grosor y color de la línea de la relación
@@ -36,7 +29,7 @@ export default class Template {
                     new go.Binding('text', 'key'))
             )
     }
-    
+
 }
 // Obtener el botón de carga de archivos
     // Crear el diagrama

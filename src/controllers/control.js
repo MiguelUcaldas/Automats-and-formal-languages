@@ -5,7 +5,7 @@ export default class Control {
     constructor() {
         this.automats = []
         this.automata = null
-        this.uinterface = new UInterface()
+        this.uInterface = new UInterface()
         this.automatsLoaded = 0
 
 
@@ -34,7 +34,7 @@ export default class Control {
 
     loadInterface() {
         if (this.automatsLoaded === this.jsonBtn.files.length) {
-            this.uinterface.run(this.automats)
+            this.uInterface.run(this.automats)
         }
     }
 

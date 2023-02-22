@@ -2,11 +2,11 @@
   "name": "Automata 01",
   "alphabet": "\\d*",
   "states": [
-    {"data": "A", "isStart": true, "isEnd": true, "adjacent":[]},
-    {"data": "B", "isStart": false,"isEnd": false, "adjacent":[]}
+    {"data": "X", "isStart": true, "isEnd": true, "adjacent":[]},
+    {"data": "Y", "isStart": false,"isEnd": false, "adjacent":[]}
   ],
   "transitions": [
-    {"start": "A", "end": "A", "chars": ["0"]},
-    {"start": "A", "end": "B", "chars": ["0"]}
+    {"start": "X", "end": "X", "chars": ["0"]},
+    {"start": "X", "end": "Y", "chars": ["0"]}
   ]
 }

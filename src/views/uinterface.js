@@ -1,15 +1,14 @@
 import Template from './template.js'
 
-export default class Uinterface {
+export default class UInterface {
     // To Translate from control to GoJS data types.
     constructor() {
         this.go = window.go
-        this.$ = this.go.GraphObject.make  // Acceder al constructor de objetos GoJS
+        this.$ = this.go.GraphObject.make  // Accesor to the object constructor of GoJS
 
         this.automats = []
         this.automata = null
 
-        // this.diagrams = []
         this.diagram = null
 
         this.nodes = []
@@ -20,17 +19,17 @@ export default class Uinterface {
 
     /**
      * Run initializes the view of the automats we're working with.
-     * @param {automats} automats is the global object that hast to be in a separated Diagram for each one. Also when is given should be global in the constructor, so interface can create each one with a function.
+     * @param {automats} automats is the global list that has the Automats objects. Also, when is given * should be global in the constructor, so interface can create and edit each one as needed.
      */
     run(automats) {
         console.log('Interface activated.')
         this.automats = automats
+        this.createDiagram()
+
         this.createAutomats()
     }
 
     createAutomats() {
-        this.createDiagram()
-
         this.automats.forEach(automata => {
             this.createNodes(automata.getStates())
             this.createLinks(automata.getTransitions())
@@ -46,80 +45,46 @@ export default class Uinterface {
             )
     }
 
+    //| Red: ##FC8181, #F6AD55 | Green #48BB78, #9AE6B4 | Blue: #4FD1C5, #81E6D9 |
     createNodes(states) {
         states.forEach(state => {
             this.nodes.push({ key: state.data, size: 50, color: 'lightblue', shape: 'Circle' })
         })
-        // this.nodes = [
-        //     { key: 'Alpha', size: 70, color: 'lightblue', shape: 'Circle' },
-        //     { key: 'Beta', size: 50, color: 'orange', shape: 'Rectangle' },
-        //     { key: 'Gamma', size: 60, color: 'lightgreen', shape: 'Triangle' },
-        //     { key: 'Delta', size: 40, color: 'pink', shape: 'Diamond' }
-        // ]
 
-        this.diagram.nodeTemplate =
-            this.$(go.Node, 'Auto',
-                this.$(go.Shape, { fill: 'white', stroke: 'gray', strokeWidth: 2 },
-                    new go.Binding('figure', 'shape'),
-                    new go.Binding('fill', 'color')),
-                this.$(go.TextBlock, { margin: 10, editable: true },
-                    new go.Binding('text', 'key'))
-            )
-        // this.diagram.model = new go.GraphLinksModel(nodeDataArray, [])
+        this.diagram.nodeTemplate = this.getNodeTemplate('#FC8181', '#F6AD55');
     }
 
     createLinks(transitions) {
         transitions.forEach(transition => {
             this.links.push({ from: transition.start, to: transition.end, color: 'green' })
         })
-        // this.links = [
-        //     { from: 'Alpha', to: 'Beta' },
-        //     { from: 'Gamma', to: 'Delta' }
-        // ]
 
-        this.diagram.linkTemplate =
-            this.$(go.Link,
-                this.$(go.Shape, { strokeWidth: 2 },
-                    new go.Binding('stroke', 'color')),
-                this.$(go.Shape, { toArrow: 'OpenTriangle', stroke: null },
-                    new go.Binding('fill', 'color'))
-            )
+        this.diagram.linkTemplate = this.getLinkTemplate();
+    }
 
-        // this.diagram.model = new go.GraphLinksModel(this.nodes, []/* linkDataArray */)
+    getNodeTemplate(color0, color1) {
+        return this.$(go.Node, 'Auto',
+            this.$(go.Shape, 'Circle', // Cambiar la forma del nodo a un círculo
+                {
+                    fill: this.$(go.Brush, 'Linear', {  // Crear un gradiente de color
+                        0: color0,  // Color de inicio
+                        1: color1   // Color de fin
+                    }),
+                    strokeWidth: 2,  // Aumentar el grosor del borde del nodo
+                    stroke: '#FEB2B2'  // Cambiar el color del borde
+                }),
+            this.$(go.TextBlock, { margin: 8 },
+                new go.Binding('text', 'key'))
+        )
+    }
+
+    getLinkTemplate() {
+        return this.$(go.Link,
+            { curve: go.Link.Bezier },
+            this.$(go.Shape, { strokeWidth: 2, stroke: '#CBD5E0' }), // Cambiar el grosor y color de la línea de la relación
+            this.$(go.Shape, { toArrow: 'Standard', stroke: '#CBD5E0' }), // Cambiar el color y agregar la flecha de la relación
+            this.$(go.TextBlock,
+                new go.Binding('text', 'key'))
+        )
     }
 }
-
-// animateNodes() {
-//     var animationManager =
-// this.go(go.AnimationManager)
-//     var nodeOrder = ['Alpha', 'Beta', 'Gamma', 'Delta']
-
-//     var animation = new this.go.Animation()
-//     animation.add(0, (time) => {
-//         var index = Math.floor(time * 4)
-//         var node = myDiagram.findNodeForKey(nodeOrder[index])
-//         if (node !== null) {
-//             var pos = node.position.copy()
-//             pos.x += node.actualBounds.width / 2
-//             pos.y += node.actualBounds.height / 2
-//             var text = myDiagram.makeTextBlock(nodeOrder[index], 'Arial', 14, 'black')
-//             text.opacity = 0
-//             text.position = pos
-//             myDiagram.add(text)
-//             animation.add(time + 1, (t) => {
-//                 text.opacity =
-// t
-    //                 text.position = pos.copy().offset(0, -t * 20)
-    //             })
-    //             animation.add(time + 2, (t) => {
-    //                 text.opacity = 1 - t
-    //                 text.position = pos.copy().offset(0, -20 + (t * 20))
-    //             })
-    //             animation.add(time + 3, (t) => {
-    //                 myDiagram.rem2ove(text)
-    //             })
-    //         }
-    //     }, 4)
-
-    //     animationManager.runAnimation(animation)
-    // }
