@@ -2,15 +2,15 @@
   "name": "Automata 02",
   "alphabet": "\\d*",
   "states": [
-    {"data": "A", "isStart": true, "isEnd": true, "adjacent":[]},
-    {"data": "B", "isStart": true, "isEnd": true, "adjacent":[]},
-    {"data": "C", "isStart": true, "isEnd": true, "adjacent":[]},
-    {"data": "D", "isStart": false,"isEnd": false, "adjacent":[]}
+    {"data": "A", "isStart": true, "isEnd": false, "adjacent":[]},
+    {"data": "B", "isStart": false, "isEnd": false, "adjacent":[]},
+    {"data": "C", "isStart": false, "isEnd": false, "adjacent":[]},
+    {"data": "D", "isStart": false,"isEnd": true, "adjacent":[]}
   ],
   "transitions": [
-    {"start": "B", "end": "A", "chars": ["0"]},
-    {"start": "A", "end": "C", "chars": ["0"]},
+    {"start": "B", "end": "A", "chars": ["0", "2", "4"]},
+    {"start": "A", "end": "C", "chars": ["0", "5"]},
     {"start": "A", "end": "D", "chars": ["1"]},
-    {"start": "D", "end": "B", "chars": ["1"]}
+    {"start": "D", "end": "B", "chars": ["3"]}
   ]
 }

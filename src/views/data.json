@@ -1,9 +1,0 @@
-{
-    "nodes": [
-      {"key": "Nodo 1", "color": "#FC8181"},
-      {"key": "Nodo 2", "color": "#F6AD55"}
-    ],
-    "links": [
-      {"from": "Nodo 1", "to": "Nodo 2", "text": "Relación"}
-    ]
-}

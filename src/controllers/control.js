@@ -1,4 +1,5 @@
 import Automata from '../models/automata.js'
+import Function from '../models/function.js'
 import UInterface from '../views/uinterface.js'
 
 export default class Control {
@@ -7,7 +8,8 @@ export default class Control {
         this.automata = null
         this.uInterface = new UInterface()
         this.automatsLoaded = 0
-
+        this.selector = []
+        this.func = null
 
         this.jsonBtn = document.getElementById('fileInput')
         this.unionBtn = document.getElementById('unionBtn')
@@ -18,24 +20,30 @@ export default class Control {
         this.clearBtn = document.getElementById('clearBtn')
 
         this.automataSel = document.getElementById('automataSel')
+        this.inputStr = document.getElementById('inputStr');
 
         this.jsonBtn.addEventListener('change', this.clickJson.bind(this))
         this.unionBtn.addEventListener('click', this.union.bind(this))
-        // this.nextBtn.addEventListener('click', this.next.bind(this))
+        this.nextBtn.addEventListener('click', this.nextState.bind(this))
         this.intersectionBtn.addEventListener('click', this.intersection.bind(this))
         this.inverseBtn.addEventListener('click', this.inverse.bind(this))
         this.complementBtn.addEventListener('click', this.complement.bind(this))
         this.clearBtn.addEventListener('click', this.clear.bind(this))
 
         this.automataSel.addEventListener('click', this.selectAutomata.bind(this))
-
-        // this.loadInterface()
+        this.inputStr.addEventListener('keyup', this.inputLoad.bind(this))
     }
 
     loadInterface() {
+        this.inputStr.removeAttribute('disabled')
+
         if (this.automatsLoaded === this.jsonBtn.files.length) {
+            this.setTransitionFunc()
+
             this.uInterface.run(this.automats)
         }
+        // console.log(actualState)
+        // this.uInterface.setActualState(this.automata)
     }
 
     union() {
@@ -113,6 +121,33 @@ export default class Control {
                 this.automata = auto
             }
         })
+        // this.uInterface.setActualState(this.automata)
+    }
+
+
+    setTransitionFunc() {
+        this.func = new Function(this.automata)
+        // After the user put the Json, the interface is loaded, this requires to know which actualState is, so is needed to arrive the transition function before the real Interface executes.
+        console.log('INSTA',this.func.getInitialState())
+        this.uInterface.setActualState(this.func.getInitialState())
+    }
+
+
+    inputLoad(e) {
+        if (e.key === 'Enter') {
+            this.inputStr.setAttribute('disabled', '')
+            this.nextBtn.removeAttribute('disabled')
+
+            this.func.setString(this.inputStr.value)
+            this.showToast('Input loaded!')
+        }
+    }
+
+    nextState() {
+
+        this.uInterface.setActualState(
+            this.func.getNextState()
+        )
     }
 
     showToast(message) {

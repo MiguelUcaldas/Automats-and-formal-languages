@@ -8,6 +8,7 @@ export default class UInterface {
 
         this.automats = []
         this.automata = null
+        this.actualState = null
 
         this.diagram = null
 
@@ -45,46 +46,74 @@ export default class UInterface {
             )
     }
 
-    //| Red: ##FC8181, #F6AD55 | Green #48BB78, #9AE6B4 | Blue: #4FD1C5, #81E6D9 |
     createNodes(states) {
         states.forEach(state => {
-            this.nodes.push({ key: state.data, size: 50, color: 'lightblue', shape: 'Circle' })
-        })
+            let colors = ['#48BBF2', '#1D8FE1']
+            if (state.isStart) colors = ['#00D1B2', '#2DD4BF']
+            if (state.isEnd) colors = ['#FF5E5B', '#FFC145']
+            if (state.isStart && state.isEnd) colors = ['#2DD4BF', '#FF5E5B']
 
-        this.diagram.nodeTemplate = this.getNodeTemplate('#FC8181', '#F6AD55');
+            let forma = state.data == this.actualState.data ? 'Square' : 'Circle'
+
+            this.nodes.push({
+                key: state.data, size: 50,
+                gradient: colors, shape: forma
+            })
+        })
+        this.diagram.nodeTemplate = this.getNodeTemplate()
     }
 
     createLinks(transitions) {
         transitions.forEach(transition => {
-            this.links.push({ from: transition.start, to: transition.end, color: 'green' })
+            let characters = ''
+            transition.chars.forEach(char => {
+                characters += char + ', '
+            })
+            this.links.push({
+                from: transition.start, to: transition.end,
+                color: '#CBD5E0', text: characters
+            })
         })
-
-        this.diagram.linkTemplate = this.getLinkTemplate();
+        this.diagram.linkTemplate = this.getLinkTemplate()
     }
 
-    getNodeTemplate(color0, color1) {
+    getNodeTemplate() {
         return this.$(go.Node, 'Auto',
-            this.$(go.Shape, 'Circle', // Cambiar la forma del nodo a un círculo
-                {
-                    fill: this.$(go.Brush, 'Linear', {  // Crear un gradiente de color
-                        0: color0,  // Color de inicio
-                        1: color1   // Color de fin
-                    }),
-                    strokeWidth: 2,  // Aumentar el grosor del borde del nodo
-                    stroke: '#FEB2B2'  // Cambiar el color del borde
-                }),
-            this.$(go.TextBlock, { margin: 8 },
+            this.$(go.Shape, { fill: 'white', stroke: 'gray', strokeWidth: 2 },
+                new go.Binding('figure', 'shape'),
+                new go.Binding('fill', 'gradient', (gradient) => {
+                    return this.$(go.Brush, 'Linear', { 0: gradient[0], 1: gradient[1], start: go.Spot.Left, end: go.Spot.Right })
+                })),
+            this.$(go.TextBlock, { margin: 10, editable: true },
                 new go.Binding('text', 'key'))
         )
+    }
+
+    getGradientBrush(node) {
+        // Obtener los valores de gradientStart y gradientEnd del nodo
+        let gStart = node.gradientStart
+        let gEnd = node.gradientEnd
+        // Crear un gradiente de color con los valores del nodo
+        return new go.Brush('Linear', { 0: gStart, 1: gEnd })
     }
 
     getLinkTemplate() {
         return this.$(go.Link,
             { curve: go.Link.Bezier },
-            this.$(go.Shape, { strokeWidth: 2, stroke: '#CBD5E0' }), // Cambiar el grosor y color de la línea de la relación
-            this.$(go.Shape, { toArrow: 'Standard', stroke: '#CBD5E0' }), // Cambiar el color y agregar la flecha de la relación
-            this.$(go.TextBlock,
-                new go.Binding('text', 'key'))
+            this.$(go.Shape, { strokeWidth: 2, stroke: '#CBD5E0' },
+                new go.Binding('stroke', 'color')),
+            this.$(go.Shape, { toArrow: 'Standard', stroke: '#CBD5E0' },
+                new go.Binding('fill', 'color')),
+            this.$(go.TextBlock, { segmentOffset: new go.Point(0, -10), segmentOrientation: go.Link.OrientAlong },
+                new go.Binding('text', 'text'))
         )
+    }
+
+    searchNode(state) {
+        return this.diagram.findNodeForKey(state.data)
+    }
+
+    setActualState(state) {
+        this.actualState = state
     }
 }

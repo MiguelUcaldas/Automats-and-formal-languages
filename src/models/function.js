@@ -1,15 +1,20 @@
 export default class Function {
-    constructor(automata, string) {
-        this.actualState = this.getInitialState()
+    constructor(automata) {
         this.automata = automata
-        this.string = string
+        this.string = ''
         this.index = 0
+        this.actualState = this.getInitialState()
+    }
+
+    setString(string) {
+        this.string = string
     }
 
     getInitialState() {
         let states = this.automata.getStates()
         for (let i = 0; i < states.length; i++) {
-            if (states[i].getIsStart()) {
+            console.log(states)
+            if (states[i].isStart) {
                 return states[i]
             }
         }
@@ -20,11 +25,11 @@ export default class Function {
         let acceptable = false
         for (let i = 0; i < string.length; i++) {
             if (this.actualState.isEnd())
-                acceptable = this.nextState()
+                acceptable = this.getNextState()
         }
     }
 
-    nextState() {
+    getNextState() {
         if (this.index === this.string.length) {
             console.log('All string has been red.')
             return
@@ -32,12 +37,12 @@ export default class Function {
 
         let transitions = this.automata.getTransitions()
         transitions.forEach(transition => {
-            if (actualState.getData() === transition.getStart().getData()) {
-                chars = transition.getChars()
+            if (this.actualState.data === transition.start) {
+                let chars = transition.chars
                 chars.forEach(char => {
                     if (char === this.string[this.index]) {
-                        console.log('actual state: ' + this.actualState.getData(), 'changed by', this.string[this.index])
-                        this.actualState = transition.getEnd()
+                        console.log('actual state: ' + this.actualState.data, 'changed by', this.string[this.index])
+                        this.actualState = transition.end
 
                         let alphabet = this.automata.getAlphabet()
                         if (alphabet.test(this.string[this.index])) {
