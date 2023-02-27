@@ -30,20 +30,22 @@ export default class UInterface {
         this.createAutomats()
     }
 
-    createAutomats() {
-        this.automats.forEach(automata => {
-            this.createNodes(automata.getStates())
-            this.createLinks(automata.getTransitions())
-        })
-        console.log(this.nodes)
-        this.diagram.model = new go.GraphLinksModel(this.nodes, this.links)
-    }
-
     createDiagram() {
         this.diagram =
             this.$(go.Diagram, this.myDiv,
                 { initialContentAlignment: go.Spot.Center }
             )
+    }
+
+    createAutomats() {
+        this.nodes = []
+        this.links = []
+        this.automats.forEach(automata => {
+            this.createNodes(automata.getStates())
+            this.createLinks(automata.getTransitions())
+        })
+        // console.log(this.nodes)
+        this.diagram.model = new go.GraphLinksModel(this.nodes, this.links)
     }
 
     createNodes(states) {
@@ -53,7 +55,8 @@ export default class UInterface {
             if (state.isEnd) colors = ['#FF5E5B', '#FFC145']
             if (state.isStart && state.isEnd) colors = ['#2DD4BF', '#FF5E5B']
 
-            let forma = state.data == this.actualState.data ? 'Square' : 'Circle'
+            // console.log('AS::', this.actualState)
+            let forma = state.data == this.actualState.data ? 'Border' : 'Circle'
 
             this.nodes.push({
                 key: state.data, size: 50,

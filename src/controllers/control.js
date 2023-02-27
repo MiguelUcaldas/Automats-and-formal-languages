@@ -98,8 +98,8 @@ export default class Control {
                     this.fillAutomata(data.name) /* To fill the selectable */
                     this.automatsLoaded++
 
-                    this.loadInterface()
                     this.automata = this.automats[0]
+                    this.loadInterface()
                 }
             })(file)
             reader.readAsText(file)
@@ -115,7 +115,7 @@ export default class Control {
 
     selectAutomata() {
         let option = this.automataSel.value
-        console.log(this.automats)
+        // console.log(this.automats)
         this.automats.forEach(auto => {
             if (option === auto.getName()) {
                 this.automata = auto
@@ -128,7 +128,6 @@ export default class Control {
     setTransitionFunc() {
         this.func = new Function(this.automata)
         // After the user put the Json, the interface is loaded, this requires to know which actualState is, so is needed to arrive the transition function before the real Interface executes.
-        console.log('INSTA',this.func.getInitialState())
         this.uInterface.setActualState(this.func.getInitialState())
     }
 
@@ -144,10 +143,10 @@ export default class Control {
     }
 
     nextState() {
-
-        this.uInterface.setActualState(
-            this.func.getNextState()
-        )
+        this.func.getNextState()
+        console.log('STATE:', this.func.getActualState())
+        this.uInterface.setActualState(this.func.getActualState())
+        this.uInterface.createAutomats()
     }
 
     showToast(message) {
