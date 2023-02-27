@@ -1,19 +1,19 @@
 import Template from './template.js'
 
 export default class UInterface {
-    // To Translate from control to GoJS data types.
     constructor() {
         this.go = window.go
-        this.$ = this.go.GraphObject.make  // Accesor to the object constructor of GoJS
+        this.$ = this.go.GraphObject.make  // Accessor to the constructor object of GoJS
 
         this.automats = []
         this.automata = null
         this.actualState = null
 
         this.diagram = null
+        this.sel = 0
 
-        this.nodes = []
-        this.links = []
+        this.nodes = null
+        this.links = null
         this.template = new Template()
         this.myDiv = document.getElementById('myDiagramDiv')
     }
@@ -23,7 +23,7 @@ export default class UInterface {
      * @param {automats} automats is the global list that has the Automats objects. Also, when is given * should be global in the constructor, so interface can create and edit each one as needed.
      */
     run(automats) {
-        console.log('Interface activated.')
+        console.log('Interface activated')
         this.automats = automats
         this.createDiagram()
 
@@ -31,10 +31,30 @@ export default class UInterface {
     }
 
     createDiagram() {
-        this.diagram =
-            this.$(go.Diagram, this.myDiv,
-                { initialContentAlignment: go.Spot.Center }
-            )
+        if (this.diagram) {
+            this.myDiv.innerHTML = ''
+            this.diagram.div = null
+            this.diagram = null
+        }
+
+        /* TODO: Change whenever is needed to see an dynamic or static view */
+        if (this.sel === 0) {
+            this.diagram =
+                this.$(go.Diagram, this.myDiv,
+                    {
+                        initialContentAlignment: go.Spot.Center,
+                        layout: this.$(go.LayeredDigraphLayout),
+                        "layout.layerSpacing": 30,
+                        "layout.columnSpacing": 30,
+                    }
+                )
+        } else {
+            this.diagram =
+                this.diagram =
+                this.$(go.Diagram, this.myDiv,
+                    { initialContentAlignment: go.Spot.Center }
+                )
+        }
     }
 
     createAutomats() {
@@ -44,7 +64,6 @@ export default class UInterface {
             this.createNodes(automata.getStates())
             this.createLinks(automata.getTransitions())
         })
-        // console.log(this.nodes)
         this.diagram.model = new go.GraphLinksModel(this.nodes, this.links)
     }
 
@@ -55,8 +74,7 @@ export default class UInterface {
             if (state.isEnd) colors = ['#FF5E5B', '#FFC145']
             if (state.isStart && state.isEnd) colors = ['#2DD4BF', '#FF5E5B']
 
-            // console.log('AS::', this.actualState)
-            let forma = state.data == this.actualState.data ? 'Border' : 'Circle'
+            let forma = state.data == this.actualState.data ? 'Diamond' : 'Circle'
 
             this.nodes.push({
                 key: state.data, size: 50,
@@ -107,16 +125,14 @@ export default class UInterface {
                 new go.Binding('stroke', 'color')),
             this.$(go.Shape, { toArrow: 'Standard', stroke: '#CBD5E0' },
                 new go.Binding('fill', 'color')),
-            this.$(go.TextBlock, { segmentOffset: new go.Point(0, -10), segmentOrientation: go.Link.OrientAlong },
+            this.$(go.TextBlock, { segmentOffset: new go.Point(0, -10), segmentOrientation: go.Link.OrientAlong, margin: 10 },
                 new go.Binding('text', 'text'))
-        )
-    }
+        );
 
-    searchNode(state) {
-        return this.diagram.findNodeForKey(state.data)
     }
 
     setActualState(state) {
         this.actualState = state
     }
+
 }

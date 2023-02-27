@@ -33,7 +33,7 @@ export default class Function {
     getNextState() {
         if (this.index === this.string.length) {
             console.log('All string has been red.')
-            return
+            return true
         }
         let flag = true
 
@@ -43,25 +43,15 @@ export default class Function {
                 let chars = transition.chars
                 chars.forEach(char => {
                     if (char === this.string[this.index] && flag) {
-                        console.log(`In AS ${this.actualState.data} == TS ${transition.start} Transition found!`)
-                        // console.log('actual state: ' + this.actualState.data, 'changed by', this.string[this.index])
-                        // GET THE STATE, NOT THE NAME CHAR
-
                         let alphabet = this.automata.getAlphabet()
                         if (alphabet.test(this.string[this.index])) {
-                            console.log('TEST PASSED')
                             this.actualState = this.automata.getState(transition.end)
+                            console.log('Valid char, state to be:', this.actualState)
                             this.index++
-                            console.log('STATE RETURNED:', this.actualState)
                             flag = false
-                            // return this.actualState
-                        } else {
-                            console.log('Invalid char: ' + this.string[this.index])
                         }
                     }
                 })
-            } else {
-                console.log(`In AS ${this.actualState.data} == TS ${transition.start} No transition found.`)
             }
         })
     }

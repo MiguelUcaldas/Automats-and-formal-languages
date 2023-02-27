@@ -21,6 +21,7 @@ export default class Control {
 
         this.automataSel = document.getElementById('automataSel')
         this.inputStr = document.getElementById('inputStr');
+        this.linkBtn = document.getElementById('reLink');
 
         this.jsonBtn.addEventListener('change', this.clickJson.bind(this))
         this.unionBtn.addEventListener('click', this.union.bind(this))
@@ -32,6 +33,7 @@ export default class Control {
 
         this.automataSel.addEventListener('click', this.selectAutomata.bind(this))
         this.inputStr.addEventListener('keyup', this.inputLoad.bind(this))
+        this.linkBtn.addEventListener('click', this.reLink.bind(this))
     }
 
     loadInterface() {
@@ -134,19 +136,34 @@ export default class Control {
 
     inputLoad(e) {
         if (e.key === 'Enter') {
-            this.inputStr.setAttribute('disabled', '')
-            this.nextBtn.removeAttribute('disabled')
+            let str = this.inputStr.value
+            console.log(this.automata.getAlphabet().test(str))
+            if (this.automata.getAlphabet().test(str)) {
 
-            this.func.setString(this.inputStr.value)
-            this.showToast('Input loaded!')
+                this.inputStr.setAttribute('disabled', '')
+                this.nextBtn.removeAttribute('disabled')
+
+                this.func.setString(str)
+                this.showToast('Input loaded!')
+            } else {
+                this.showToast(`Input not valid! Σ = ${this.automata.getAlphabet()}.`)
+            }
         }
     }
 
     nextState() {
-        this.func.getNextState()
-        console.log('STATE:', this.func.getActualState())
+        if (this.func.getNextState()) {
+            this.showToast(`All string has been red`)
+            return
+        }
+        this.showToast(`You are on state ${this.func.getActualState().data}`)
         this.uInterface.setActualState(this.func.getActualState())
         this.uInterface.createAutomats()
+    }
+
+    reLink() {
+        this.uInterface.sel = 1 - this.uInterface.sel
+        this.uInterface.run(this.automats)
     }
 
     showToast(message) {
