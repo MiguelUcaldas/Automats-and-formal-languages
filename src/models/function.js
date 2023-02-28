@@ -11,10 +11,8 @@ export default class Function {
     }
 
     getInitialState() {
-        // console.log('AUTO:', this.automata)
         let states = this.automata.states
         for (let i = 0; i < states.length; i++) {
-            // console.log(states)
             if (states[i].isStart) {
                 return states[i]
             }

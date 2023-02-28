@@ -7,7 +7,7 @@ export default class Control {
         this.automats = []
         this.automata = null
         this.uInterface = new UInterface()
-        this.automatsLoaded = 0
+        this.automatsLoaded = 0 /* Variable to load the interface until all Json's are in */
         this.selector = []
         this.func = null
 
@@ -117,13 +117,11 @@ export default class Control {
 
     selectAutomata() {
         let option = this.automataSel.value
-        // console.log(this.automats)
         this.automats.forEach(auto => {
             if (option === auto.getName()) {
                 this.automata = auto
             }
         })
-        // this.uInterface.setActualState(this.automata)
     }
 
 

@@ -29,9 +29,14 @@ export default class Automata {
     getStates() {
         return this.states
     }
+    /**
+    * This function works to get an Automata State with only its "data", that has to be unique.
+    * @param {list} list is the list of elements where the specific automata object would be searched.
+    * @param {object} obj is the graph object, a State.
+    * @returns the object if exists, if doesn't will return a null datatype.
+    */
     getState(data) {
         return this.states.find(state => state.data.includes(data))
-        // console.log(`State "${data}" couldn't be found.`)
     }
 
     setTransitions(transitions) {
@@ -88,7 +93,6 @@ export default class Automata {
 
     setAlphabet(symbols) {
         this.alphabet = new RegExp(`^[${symbols}]+$`)
-        // console.log('Alphabet defined.')
     }
 
     seeStates(str = '') {
@@ -108,12 +112,12 @@ export default class Automata {
 
     /*  */
 
-    readString(string) {
-        // read each character of the string
-        for (let i = 0; i < string.length; i++) {
-            console.log(string[i])
-        }
-    }
+    // readString(string) {
+    //     // read each character of the string
+    //     for (let i = 0; i < string.length; i++) {
+    //         console.log(string[i])
+    //     }
+    // }
 
     toString() {
         return `States: ${this.seeStates()}
